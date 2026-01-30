@@ -647,7 +647,11 @@ impl WebshellScanner {
         score
     }
 
-    fn determine_threat_level(&self, detections: &[Detection], obfuscation_score: u32) -> ThreatLevel {
+    fn determine_threat_level(
+        &self,
+        detections: &[Detection],
+        obfuscation_score: u32,
+    ) -> ThreatLevel {
         if detections
             .iter()
             .any(|d| d.category == DetectionCategory::KnownSignature)
@@ -676,13 +680,12 @@ impl WebshellScanner {
             return ThreatLevel::Malicious;
         }
 
-        if obfuscation_score >= self.obfuscation_threshold {
-            if detections
+        if obfuscation_score >= self.obfuscation_threshold
+            && detections
                 .iter()
                 .any(|d| d.category == DetectionCategory::SuspiciousFunction)
-            {
-                return ThreatLevel::Suspicious;
-            }
+        {
+            return ThreatLevel::Suspicious;
         }
 
         let suspicious_count = detections
@@ -834,7 +837,8 @@ fn compile_suspicious_functions() -> Vec<CompiledPattern> {
             category: DetectionCategory::SuspiciousFunction,
         },
         CompiledPattern {
-            regex: Regex::new(r#"(?i)\b(system|exec|shell_exec|passthru|popen|proc_open)\s*\("#).unwrap(),
+            regex: Regex::new(r#"(?i)\b(system|exec|shell_exec|passthru|popen|proc_open)\s*\("#)
+                .unwrap(),
             description: "Shell command execution function".to_string(),
             category: DetectionCategory::SuspiciousFunction,
         },
@@ -859,7 +863,10 @@ fn compile_suspicious_functions() -> Vec<CompiledPattern> {
             category: DetectionCategory::SuspiciousFunction,
         },
         CompiledPattern {
-            regex: Regex::new(r#"(?i)\b(file_get_contents|file_put_contents|fwrite)\s*\([^)]*https?://"#).unwrap(),
+            regex: Regex::new(
+                r#"(?i)\b(file_get_contents|file_put_contents|fwrite)\s*\([^)]*https?://"#,
+            )
+            .unwrap(),
             description: "Remote file operation".to_string(),
             category: DetectionCategory::SuspiciousFunction,
         },
@@ -939,7 +946,10 @@ fn compile_dynamic_execution_patterns() -> Vec<CompiledPattern> {
 fn compile_jsp_patterns() -> Vec<CompiledPattern> {
     vec![
         CompiledPattern {
-            regex: Regex::new(r#"(?i)Runtime\s*\.\s*getRuntime\s*\(\s*\)\s*\.\s*exec\s*\([^)]*request\s*\."#).unwrap(),
+            regex: Regex::new(
+                r#"(?i)Runtime\s*\.\s*getRuntime\s*\(\s*\)\s*\.\s*exec\s*\([^)]*request\s*\."#,
+            )
+            .unwrap(),
             description: "Runtime.exec() with request parameter".to_string(),
             category: DetectionCategory::InputEvalChain,
         },
@@ -969,7 +979,8 @@ fn compile_jsp_patterns() -> Vec<CompiledPattern> {
             category: DetectionCategory::SuspiciousFunction,
         },
         CompiledPattern {
-            regex: Regex::new(r#"(?i)(InvokerTransformer|ConstantTransformer|ChainedTransformer)"#).unwrap(),
+            regex: Regex::new(r#"(?i)(InvokerTransformer|ConstantTransformer|ChainedTransformer)"#)
+                .unwrap(),
             description: "Commons-collections gadget chain".to_string(),
             category: DetectionCategory::KnownSignature,
         },
@@ -979,7 +990,8 @@ fn compile_jsp_patterns() -> Vec<CompiledPattern> {
             category: DetectionCategory::KnownSignature,
         },
         CompiledPattern {
-            regex: Regex::new(r#"(?i)new\s+File(Input|Reader)\s*\([^)]*(/etc/passwd|/etc/shadow)"#).unwrap(),
+            regex: Regex::new(r#"(?i)new\s+File(Input|Reader)\s*\([^)]*(/etc/passwd|/etc/shadow)"#)
+                .unwrap(),
             description: "Accessing sensitive system files".to_string(),
             category: DetectionCategory::SuspiciousFunction,
         },
@@ -1019,7 +1031,10 @@ fn compile_asp_patterns() -> Vec<CompiledPattern> {
             category: DetectionCategory::InputEvalChain,
         },
         CompiledPattern {
-            regex: Regex::new(r#"(?i)(CompileAssemblyFromSource|CSharpCodeProvider|VBCodeProvider)"#).unwrap(),
+            regex: Regex::new(
+                r#"(?i)(CompileAssemblyFromSource|CSharpCodeProvider|VBCodeProvider)"#,
+            )
+            .unwrap(),
             description: "Dynamic code compilation".to_string(),
             category: DetectionCategory::SuspiciousFunction,
         },
@@ -1034,7 +1049,8 @@ fn compile_asp_patterns() -> Vec<CompiledPattern> {
             category: DetectionCategory::KnownSignature,
         },
         CompiledPattern {
-            regex: Regex::new(r#"(?i)(File\.(Write|Delete|Move|Copy))[^;]*Request\s*[\.\[]"#).unwrap(),
+            regex: Regex::new(r#"(?i)(File\.(Write|Delete|Move|Copy))[^;]*Request\s*[\.\[]"#)
+                .unwrap(),
             description: "File operation with Request input".to_string(),
             category: DetectionCategory::SuspiciousFunction,
         },
@@ -1054,7 +1070,10 @@ fn compile_python_patterns() -> Vec<CompiledPattern> {
             category: DetectionCategory::InputEvalChain,
         },
         CompiledPattern {
-            regex: Regex::new(r#"(?i)subprocess\s*\.\s*(call|run|Popen|check_output)\s*\([^)]*request\s*[\.\[]"#).unwrap(),
+            regex: Regex::new(
+                r#"(?i)subprocess\s*\.\s*(call|run|Popen|check_output)\s*\([^)]*request\s*[\.\[]"#,
+            )
+            .unwrap(),
             description: "subprocess with request input".to_string(),
             category: DetectionCategory::InputEvalChain,
         },
@@ -1094,7 +1113,8 @@ fn compile_python_patterns() -> Vec<CompiledPattern> {
             category: DetectionCategory::SuspiciousFunction,
         },
         CompiledPattern {
-            regex: Regex::new(r#"(?i)exec\s*\([^)]*base64\s*\.\s*(b64decode|decodebytes)"#).unwrap(),
+            regex: Regex::new(r#"(?i)exec\s*\([^)]*base64\s*\.\s*(b64decode|decodebytes)"#)
+                .unwrap(),
             description: "exec with base64 decode".to_string(),
             category: DetectionCategory::DecodeChain,
         },
@@ -1104,7 +1124,10 @@ fn compile_python_patterns() -> Vec<CompiledPattern> {
             category: DetectionCategory::KnownSignature,
         },
         CompiledPattern {
-            regex: Regex::new(r#"(?i)(request\.(form|args|data|values|json))[^;]*(os\.|subprocess\.|eval|exec)"#).unwrap(),
+            regex: Regex::new(
+                r#"(?i)(request\.(form|args|data|values|json))[^;]*(os\.|subprocess\.|eval|exec)"#,
+            )
+            .unwrap(),
             description: "Web framework request to code execution".to_string(),
             category: DetectionCategory::InputEvalChain,
         },
@@ -1190,8 +1213,7 @@ mod tests {
     #[test]
     fn test_jsp_runtime_exec() {
         let s = scanner();
-        let result =
-            s.scan_jsp(r#"<% Runtime.getRuntime().exec(request.getParameter("cmd")); %>"#);
+        let result = s.scan_jsp(r#"<% Runtime.getRuntime().exec(request.getParameter("cmd")); %>"#);
         assert_eq!(result.threat_level, ThreatLevel::Malicious);
         assert!(result.is_malicious);
         assert_eq!(result.language, Some(WebshellLanguage::Jsp));

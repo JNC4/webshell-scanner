@@ -152,9 +152,12 @@ fn main() -> Result<()> {
         // Scan files/directories
         for path in &cli.paths {
             if path.is_file() {
-                if let Some(output) =
-                    scan_file(&scanner, path, cli.context_aware, framework_detector.as_ref())?
-                {
+                if let Some(output) = scan_file(
+                    &scanner,
+                    path,
+                    cli.context_aware,
+                    framework_detector.as_ref(),
+                )? {
                     if output.is_malicious {
                         malicious_count += 1;
                     }
@@ -203,7 +206,9 @@ fn main() -> Result<()> {
                 if malicious_count > 0 {
                     eprintln!(
                         "{}",
-                        format!("Found {} malicious file(s)", malicious_count).red().bold()
+                        format!("Found {} malicious file(s)", malicious_count)
+                            .red()
+                            .bold()
                     );
                 } else {
                     eprintln!("{}", "No webshells detected".green());

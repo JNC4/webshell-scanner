@@ -1,13 +1,18 @@
 [package]
 name = "webshell-scanner"
 version = "0.1.0"
-edition = "2024"
+edition = "2021"
+rust-version = "1.70"
 authors = ["Julius C (REIUK LTD)"]
 license = "MIT"
 description = "A standalone webshell detection tool supporting PHP, JSP, ASP.NET, and Python"
+documentation = "https://docs.rs/webshell-scanner"
+homepage = "https://github.com/JNC4/webshell-scanner"
 repository = "https://github.com/JNC4/webshell-scanner"
+readme = "README.md"
 keywords = ["security", "webshell", "malware", "detection", "scanner"]
 categories = ["command-line-utilities", "development-tools"]
+exclude = [".github/", "tests/", "*.md", "!README.md"]
 
 [dependencies]
 regex = "1"
