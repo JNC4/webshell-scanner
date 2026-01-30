@@ -5,7 +5,7 @@ edition = "2024"
 authors = ["Julius C (REIUK LTD)"]
 license = "MIT"
 description = "A standalone webshell detection tool supporting PHP, JSP, ASP.NET, and Python"
-repository = "https://github.com/reiuk/webshell-scanner"
+repository = "https://github.com/JNC4/webshell-scanner"
 keywords = ["security", "webshell", "malware", "detection", "scanner"]
 categories = ["command-line-utilities", "development-tools"]
 

@@ -2,7 +2,7 @@
 
 A standalone, open-source webshell detection tool supporting PHP, JSP, ASP.NET, and Python.
 
-Extracted from [XPAV](https://github.com/reiuk/xpav) to be a focused, single-purpose tool.
+Extracted from [XPAV](https://github.com/JNC4/xpav) to be a focused, single-purpose tool.
 
 ## Features
 
@@ -23,7 +23,7 @@ Extracted from [XPAV](https://github.com/reiuk/xpav) to be a focused, single-pur
 ### From source
 
 ```bash
-git clone https://github.com/reiuk/webshell-scanner
+git clone https://github.com/JNC4/webshell-scanner
 cd webshell-scanner
 cargo install --path .
 ```
