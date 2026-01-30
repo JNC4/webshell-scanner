@@ -1,0 +1,35 @@
+[package]
+name = "webshell-scanner"
+version = "0.1.0"
+edition = "2024"
+authors = ["REIUK LTD"]
+license = "MIT"
+description = "A standalone webshell detection tool supporting PHP, JSP, ASP.NET, and Python"
+repository = "https://github.com/reiuk/webshell-scanner"
+keywords = ["security", "webshell", "malware", "detection", "scanner"]
+categories = ["command-line-utilities", "development-tools"]
+
+[dependencies]
+regex = "1"
+once_cell = "1"
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+walkdir = "2"
+anyhow = "1"
+colored = "2"
+
+[dev-dependencies]
+tempfile = "3"
+
+[[bin]]
+name = "webshell-scanner"
+path = "src/main.rs"
+
+[lib]
+name = "webshell_scanner"
+path = "src/lib.rs"
+
+[profile.release]
+lto = true
+strip = true
