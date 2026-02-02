@@ -151,4 +151,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## Credits
 
-Originally developed as part of [XPAV](https://github.com/reiuk/xpav) by REIUK LTD.
+Originally developed as part of [XPAV](https://github.com/jnc4/xpav) by REIUK LTD.
